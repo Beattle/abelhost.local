@@ -55,7 +55,7 @@
       }
     },
     mounted () {
-      console.log(this.create_url)
+
     }
   }
 </script>

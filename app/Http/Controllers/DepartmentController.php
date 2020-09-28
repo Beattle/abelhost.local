@@ -115,21 +115,19 @@ class DepartmentController extends Controller
      */
     public function update(DepartmentRequest $request, $id)
     {
-        $data = $request->validated();
-        $department = Department::find($id);
 
+        $validated_data =  $request->validated();
+        $user_ids = $validated_data['user_id'];
+        $data = array_filter($validated_data,function($key): bool {
+            return $key !== 'user_id';
+        },ARRAY_FILTER_USE_KEY);
+        $department = Department::find($id);
         if(($request->file('logo'))){
             $data['logo'] = Storage::disk('logo')->put('',$request->file('logo'));
         }
+        $department->update($data);
 
-        $department->update(
-            [
-                'name' => $data['name'],
-                'description' => $data['description'],
-                'logo' => $data['logo'],
-            ]
-        );
-        $department->users()->sync($data['user_id']);
+        $department->users()->sync($user_ids);
         return Redirect::back()->with('message', 'Отдел обновлён');
     }
 

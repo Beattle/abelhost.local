@@ -46,7 +46,7 @@
       Pagination
     },
     mounted () {
-      console.log(this.$page)
+
     },
     methods: {
       destroy (url) {

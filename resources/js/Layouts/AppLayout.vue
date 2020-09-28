@@ -20,6 +20,9 @@
                             <jet-nav-link href="/users" :active="$page.currentRouteName === 'users.index'">
                                 Пользователи
                             </jet-nav-link>
+                            <jet-nav-link href="/stats" :active="$page.currentRouteName === 'graph'">
+                                График
+                            </jet-nav-link>
                         </div>
                     </div>
 
@@ -249,6 +252,7 @@
             }
         },
         mounted () {
+
         }
     }
 </script>

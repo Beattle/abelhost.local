@@ -1,6 +1,8 @@
 <?php
 
-use App\Http\{Controllers\DepartmentController, Controllers\UserController};
+use App\Http\{Controllers\DepartmentController,
+    Controllers\UserController,
+    Controllers\StatsController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,12 +20,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-/*Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia\Inertia::render('Dashboard');
-})->name('dashboard');*/
+Route::get('/google_auth', [UserController::class,'redirectToProvider']);
+Route::get('/google_callback',[UserController::class,'handleProviderCallback']);
 
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::resource('departments',DepartmentController::class);
     Route::resource('users', UserController::class);
+    Route::get('/stats',[StatsController::class,'index'])->name('graph');
 });

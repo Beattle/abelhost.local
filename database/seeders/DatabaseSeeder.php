@@ -15,8 +15,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(15)->create();
-        Department::factory(15)->create();
+        Department::factory(15)
+            ->create()->each(function ($department){
+                $users = User::factory(rand(1,10))->create()->pluck('id');
+                $department->users()->attach($users);
+            });
 
         DB::table('users')->insert([
             'name' => 'admin',

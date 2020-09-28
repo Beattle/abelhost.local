@@ -113,7 +113,7 @@
       },
     },
     mounted () {
-      console.log(this.$page)
+
     }
   }
 </script>

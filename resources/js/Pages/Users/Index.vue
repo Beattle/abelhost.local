@@ -54,7 +54,7 @@
       }
     },
     mounted () {
-      console.log(this.$page)
+		console.log(this.$page)
     }
   }
 </script>

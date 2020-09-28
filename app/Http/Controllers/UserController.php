@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use App\Providers\RouteServiceProvider;
 use Inertia\Inertia;
 use Illuminate\{Http\Request,
     Support\Facades\Hash,
     Support\Facades\Redirect,
-    Support\Facades\Storage,
     Support\Facades\URL,
     Support\Str};
-
+use Laravel\Socialite\Facades\Socialite;
 
 
 class UserController extends Controller
@@ -136,5 +136,44 @@ class UserController extends Controller
         ]);
         User::destroy($id);
         return Redirect::route('users.index');
+    }
+
+    /**
+     * Redirect the user to the Google authentication page.
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function redirectToProvider()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    /**
+     * Obtain the user information from Google.
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function handleProviderCallback()
+    {
+        try {
+            $user = Socialite::driver('google')->user();
+        } catch (\Exception $e) {
+            return redirect('/login');
+        }
+        // check if they're an existing user
+        $existingUser = User::where('email', $user->email)->first();
+        if($existingUser){
+            // log them in
+            auth()->login($existingUser, true);
+        } else {
+            // create a new user
+            $newUser                  = new User;
+            $newUser->name            = $user->name;
+            $newUser->email           = $user->email;
+            $newUser->google_id       = $user->id;
+            $newUser->save();
+            auth()->login($newUser, true);
+        }
+        return redirect()->to(RouteServiceProvider::HOME);
     }
 }

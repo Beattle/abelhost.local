@@ -38,7 +38,7 @@ class DepartmentFactory extends Factory
         }
 
         return [
-            'name' => $this->faker->unique()->jobTitle,
+            'name' => $this->faker->unique()->colorName,
             'description' => $this->faker->realText(),
             'logo' => $pics[self::$index++]
         ];

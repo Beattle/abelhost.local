@@ -14,8 +14,10 @@
 				{{user.created_at}}
 			</div>
 			<div class="m-4">
-				<button v-on:click="edit(user.edit_url)"
-					class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+				<button
+					v-on:click="edit(user.edit_url)"
+					class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+				>
 					Edit
 				</button>
 				<button
@@ -32,14 +34,17 @@
 
 <script>
   import Pagination from './../../../Shared/Pagination'
-
+  import Plotly from 'plotly.js-dist'
   export default {
     name: 'userList',
     components: {
-      Pagination
+      Pagination,
     },
     mounted () {
-      console.log(this.$page)
+    },
+    data: function () {
+      return {
+      }
     },
     methods: {
       destroy (url) {
@@ -51,7 +56,7 @@
           headers: {},
         })
       },
-      edit(url){
+      edit (url) {
         this.$inertia.visit(url, {
           replace: false,
           preserveState: false,

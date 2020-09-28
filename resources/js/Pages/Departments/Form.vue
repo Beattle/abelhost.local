@@ -43,10 +43,6 @@
 						</div>
 						<div class="mb-6">
 							<label class="block text-gray-700 text-sm font-bold mb-2" for="logo">Лого:</label>
-							<div v-if="form.logo" class="">
-								<a target="_blank" :href="'/logo/'+form.logo" class="text-blue-500 underline">{{form.logo}}</a><br/>
-								<span class="">Изменить:</span>
-							</div>
 							<input
 								v-bind:class="{'border-red-500':$page.errors.logo}"
 								type="file" multiple v-on:change="getFile($event)"
@@ -119,9 +115,10 @@
 
         if (this.form.logo !== null && typeof this.form.logo == 'object') {
           data.append('logo', this.form.logo[0], this.form.logo[0].name)
+
         }
         if (this.form.logo !== null  && typeof this.form.logo == 'string') {
-          data.append('logo', this.form.logo )
+        //  data.append('logo', this.form.logo )
         }
 		if(this.$page.currentRouteName === 'departments.create'){
 		  this.create(data)
@@ -145,7 +142,7 @@
       }
     },
     mounted () {
-		console.log(this.$page)
+
     }
   }
 </script>
